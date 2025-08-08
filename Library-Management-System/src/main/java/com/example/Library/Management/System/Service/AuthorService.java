@@ -38,6 +38,7 @@ public class AuthorService {
     public AuthorDTO updateAuthor(Long id, AuthorDTO authorDTO){
         Author author = repo.findById(id).orElseThrow(() -> new CustomException("Author not found with id " + id));
         author.setName(authorDTO.getName());
+        author.setNationality(authorDTO.getNationality());
         return mapper.toDto(repo.save(author));
     }
 
