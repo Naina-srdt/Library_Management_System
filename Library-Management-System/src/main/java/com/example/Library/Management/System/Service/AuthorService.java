@@ -2,6 +2,7 @@ package com.example.Library.Management.System.Service;
 
 import com.example.Library.Management.System.DTO.AuthorDTO;
 import com.example.Library.Management.System.Entity.Author;
+import com.example.Library.Management.System.ExceptionHandling.CustomException;
 import com.example.Library.Management.System.Mapper.AuthorMapper;
 import com.example.Library.Management.System.Repository.AuthorRepo;
 import org.springframework.stereotype.Service;
@@ -30,12 +31,12 @@ public class AuthorService {
         return repo.findAll().stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
-    public AuthorDTO getAuthorById(Long id){
-        return repo.findById(id).map(mapper::toDto).orElse(null);
+    public Author getAuthorById(Long id){
+        return repo.findById(id).orElseThrow(() -> new CustomException("Author not found with id " + id));
     }
 
     public AuthorDTO updateAuthor(Long id, AuthorDTO authorDTO){
-        Author author = repo.findById(id).orElseThrow(() -> new RuntimeException("Author not found"));
+        Author author = repo.findById(id).orElseThrow(() -> new CustomException("Author not found with id " + id));
         author.setName(authorDTO.getName());
         return mapper.toDto(repo.save(author));
     }
@@ -43,5 +44,4 @@ public class AuthorService {
     public void deleteAuthor(Long id){
         repo.deleteById(id);
     }
-
 }

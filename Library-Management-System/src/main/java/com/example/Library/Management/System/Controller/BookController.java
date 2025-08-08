@@ -1,6 +1,7 @@
 package com.example.Library.Management.System.Controller;
 
 import com.example.Library.Management.System.DTO.BookDTO;
+import com.example.Library.Management.System.Entity.Book;
 import com.example.Library.Management.System.Service.BookService;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class BookController {
         return service.createBook(bookDTO);
     }
 
-    //Get All
+    //Get All books
     @GetMapping
     public List<BookDTO> getAllBooks(){
         return service.getAllBooks();
@@ -30,7 +31,7 @@ public class BookController {
 
     //Get Book by id
     @GetMapping("/{id}")
-    public BookDTO getById(@PathVariable Long id){
+    public Book getById(@PathVariable Long id){
         return service.getBookById(id);
     }
 
@@ -46,13 +47,19 @@ public class BookController {
         return service.updateBook(id, bookDTO);
     }
 
-    //Get Book by Author id
+    //Get Books by Author ID
     @GetMapping("/author/{authorId}")
     public List<BookDTO> getBooksByAuthorId(@PathVariable Long authorId){
         return service.getBooksByAuthorId(authorId);
     }
 
-    //Get Book by Publisher country
+    //Get Book by Publisher ID
+    @GetMapping("/publisher/{publisherId}")
+    public List<BookDTO> getBooksByPublisherId(@PathVariable Long publisherId){
+        return service.getBooksByPublisherId(publisherId);
+    }
+
+    //Get Books by Publisher country
     @GetMapping("/publisher/country/{country}")
     public List<BookDTO> findBooksByPublisherCountry(@PathVariable String country){
         return service.findBooksByPublisherCountry(country);

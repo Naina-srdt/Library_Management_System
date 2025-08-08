@@ -12,7 +12,7 @@ import java.util.List;
 public interface BookRepo extends JpaRepository<Book, Long> {
 
     // JPQL - Get all books by Author ID
-    @Query("SELECT b FROM Book b WHERE b.author.id = :authorId")
+    @Query("select b FROM Book b WHERE b.author.id = :authorId")
     List<Book> getBooksByAuthorId(@Param("authorId") Long authorId);
 
     // Native - Get all books by Publisher country
@@ -22,5 +22,7 @@ public interface BookRepo extends JpaRepository<Book, Long> {
     @Query(value = "SELECT b.* FROM book b JOIN publisher p ON b.publisher_id = p.id WHERE p.country = :country", nativeQuery = true)
     List<Book> findBooksByPublisherCountry(@Param("country") String country);
 
-
+    //JPQL - Get all books by Publisher ID
+    @Query("select b from Book b where b.publisher.id = :publisherId")
+    List<Book> getBooksByPublisherId(@Param("publisherId") Long publisherId);
 }

@@ -1,6 +1,7 @@
 package com.example.Library.Management.System.Controller;
 
 import com.example.Library.Management.System.DTO.AuthorDTO;
+import com.example.Library.Management.System.Entity.Author;
 import com.example.Library.Management.System.Service.AuthorService;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +30,9 @@ public class AuthorController {
     }
 
     //Get Authors by id
+    //Change
     @GetMapping("/{id}")
-    public AuthorDTO getById(@PathVariable Long id){
+    public Author getById(@PathVariable Long id){
         return service.getAuthorById(id);
     }
 

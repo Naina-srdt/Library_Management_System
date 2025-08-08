@@ -4,6 +4,7 @@ import com.example.Library.Management.System.DTO.BookDTO;
 import com.example.Library.Management.System.Entity.Author;
 import com.example.Library.Management.System.Entity.Book;
 import com.example.Library.Management.System.Entity.Publisher;
+import com.example.Library.Management.System.ExceptionHandling.CustomException;
 import com.example.Library.Management.System.Mapper.BookMapper;
 import com.example.Library.Management.System.Repository.AuthorRepo;
 import com.example.Library.Management.System.Repository.BookRepo;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class BookService {
@@ -38,10 +40,10 @@ public class BookService {
         }
 
         Author author = authorRepo.findById(bookDTO.getAuthorId())
-                .orElseThrow(() -> new RuntimeException("Author not found"));
+                .orElseThrow(() -> new CustomException("Author not Found with id " + id));
 
         Publisher publisher = publisherRepo.findById(bookDTO.getPublisherId())
-                .orElseThrow(() -> new RuntimeException("Publisher not found"));
+                .orElseThrow(() -> new CustomException("Publisher not Found with id " + id));
 
         Book book = BookMapper.toEntity(bookDTO, author, publisher);
         return BookMapper.toDto(bookRepo.save(book));
@@ -51,8 +53,10 @@ public class BookService {
         return bookRepo.findAll().stream().map(BookMapper::toDto).collect(Collectors.toList());
     }
 
-    public BookDTO getBookById(Long id){
-        return bookRepo.findById(id).map(BookMapper::toDto).orElse(null);
+    //
+    public Book getBookById(Long id){
+//        return bookRepo.findById(id).map(BookMapper::toDto).orElse(null);
+        return bookRepo.findById(id).orElseThrow(() -> new CustomException("Book not Found with id " + id));
     }
 
     public void deleteBook(Long id){
@@ -60,7 +64,7 @@ public class BookService {
     }
 
     public BookDTO updateBook(Long id, BookDTO bookDTO){
-        Book book = bookRepo.findById(id).orElseThrow(() -> new RuntimeException("Book Not Found"));
+        Book book = bookRepo.findById(id).orElseThrow(() -> new CustomException("Book not Found with id " + id));
         book.setTitle(bookDTO.getTitle());
         return BookMapper.toDto(bookRepo.save(book));
     }
@@ -69,8 +73,11 @@ public class BookService {
         return bookRepo.getBooksByAuthorId(authorId).stream().map(BookMapper::toDto).collect(Collectors.toList());
     }
 
+    public List<BookDTO> getBooksByPublisherId(Long publisherId) {
+        return bookRepo.getBooksByPublisherId(publisherId).stream().map(BookMapper::toDto).collect(Collectors.toList());
+    }
+
     public List<BookDTO> findBooksByPublisherCountry(String country){
         return bookRepo.findBooksByPublisherCountry(country).stream().map(BookMapper::toDto).collect(Collectors.toList());
     }
-
 }

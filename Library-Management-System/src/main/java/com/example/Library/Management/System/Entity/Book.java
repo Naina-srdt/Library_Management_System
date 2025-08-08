@@ -1,5 +1,6 @@
 package com.example.Library.Management.System.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,9 +15,11 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "publisher_id")
+    @JsonIgnore
     private Publisher publisher;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "author_id")
     private Author author;
 }

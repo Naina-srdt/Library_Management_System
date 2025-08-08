@@ -1,6 +1,7 @@
 package com.example.Library.Management.System.Controller;
 
 import com.example.Library.Management.System.DTO.PublisherDTO;
+import com.example.Library.Management.System.Entity.Publisher;
 import com.example.Library.Management.System.Service.PublisherService;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,9 +31,15 @@ public class PublisherController {
 
     //Get Publisher by id
     @GetMapping("/{id}")
-    public PublisherDTO getPublisherById(@PathVariable Long id){
+    public Publisher getPublisherById(@PathVariable Long id){
         return publisherService.getPublisherById(id);
     }
+
+//    //Get Publisher by id
+//    @GetMapping("/{id}")
+//    public PublisherDTO getPublisherById(@PathVariable Long id){
+//        return publisherService.getPublisherById(id);
+//    }
 
     //Delete Publisher by id
     @DeleteMapping("/{id}")
