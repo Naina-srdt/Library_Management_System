@@ -30,6 +30,7 @@ public class BookService {
         this.publisherRepo = publisherRepo;
     }
 
+    //Create
     public BookDTO createBook(BookDTO bookDTO) {
         if (bookDTO.getAuthorId() == null) {
             throw new IllegalArgumentException("Author ID must not be null");
@@ -49,20 +50,23 @@ public class BookService {
         return BookMapper.toDto(bookRepo.save(book));
     }
 
+    //Get all
     public List<BookDTO> getAllBooks(){
         return bookRepo.findAll().stream().map(BookMapper::toDto).collect(Collectors.toList());
     }
 
-    //
+    //Get by id
     public Book getBookById(Long id){
 //        return bookRepo.findById(id).map(BookMapper::toDto).orElse(null);
         return bookRepo.findById(id).orElseThrow(() -> new CustomException("Book not Found with id " + id));
     }
 
+    //Delete by id
     public void deleteBook(Long id){
         bookRepo.deleteById(id);
     }
 
+    //Update by id
     public BookDTO updateBook(Long id, BookDTO bookDTO){
         Book book = bookRepo.findById(id).orElseThrow(() -> new CustomException("Book not Found with id " + id));
         book.setTitle(bookDTO.getTitle());

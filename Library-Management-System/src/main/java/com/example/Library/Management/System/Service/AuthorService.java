@@ -21,20 +21,23 @@ public class AuthorService {
         this.mapper = mapper;
     }
 
+    //Create
     public AuthorDTO create(AuthorDTO dto) {
         Author author = mapper.toEntity(dto);
         return mapper.toDto(repo.save(author));
-
     }
 
+    //Get all
     public List<AuthorDTO> getAll() {
         return repo.findAll().stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
+    //Get by id
     public Author getAuthorById(Long id){
         return repo.findById(id).orElseThrow(() -> new CustomException("Author not found with id " + id));
     }
 
+    //Update by id
     public AuthorDTO updateAuthor(Long id, AuthorDTO authorDTO){
         Author author = repo.findById(id).orElseThrow(() -> new CustomException("Author not found with id " + id));
         author.setName(authorDTO.getName());
@@ -42,6 +45,7 @@ public class AuthorService {
         return mapper.toDto(repo.save(author));
     }
 
+    //Delete by id
     public void deleteAuthor(Long id){
         repo.deleteById(id);
     }

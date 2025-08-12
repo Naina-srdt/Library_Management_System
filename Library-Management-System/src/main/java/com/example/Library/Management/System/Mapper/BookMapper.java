@@ -25,7 +25,6 @@ public class BookMapper {
         } else {
             dto.setPublisherId(null);
         }
-
         return dto;
     }
 

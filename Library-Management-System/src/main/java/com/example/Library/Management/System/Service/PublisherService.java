@@ -21,15 +21,18 @@ public class PublisherService {
         this.publisherMapper = publisherMapper;
     }
 
+    //Create
     public PublisherDTO create(PublisherDTO publisherDTO){
         Publisher publisher = publisherMapper.toEntity(publisherDTO);
         return publisherMapper.toDto(publisherRepo.save(publisher));
     }
 
+    //Get all
     public List<PublisherDTO> getAll(){
         return publisherRepo.findAll().stream().map(publisherMapper::toDto).collect(Collectors.toList());
     }
 
+    //Get by id
     public Publisher getPublisherById(Long id){
         return publisherRepo.findById(id).orElseThrow(() -> new CustomException("Publisher not Found with id " + id));
     }
@@ -38,10 +41,12 @@ public class PublisherService {
 //        return publisherRepo.findById(id).map(publisherMapper::toDto).orElse(null);
 //    }
 
+    //Delete by id
     public void deletePublisher(Long id){
         publisherRepo.deleteById(id);
     }
 
+    //Update by id
     public PublisherDTO updatePublisher(Long id, PublisherDTO publisherDTO) {
         Publisher publisher = publisherRepo.findById(id).orElseThrow(() -> new CustomException("Publisher not Found with id " + id));
         publisher.setName(publisherDTO.getName());
