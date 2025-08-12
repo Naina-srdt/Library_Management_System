@@ -20,14 +20,16 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 public class BookService {
 
     private final BookRepo bookRepo;
+    private final BookMapper bookMapper;
     private final AuthorRepo authorRepo;
     private final PublisherRepo publisherRepo;
 
 
-    public BookService(BookRepo bookRepo, AuthorRepo authorRepo, PublisherRepo publisherRepo, BookMapper bookMapper) {
+    public BookService(BookRepo bookRepo, AuthorRepo authorRepo, PublisherRepo publisherRepo, BookMapper bookMapper, BookMapper bookMapper1) {
         this.bookRepo = bookRepo;
         this.authorRepo = authorRepo;
         this.publisherRepo = publisherRepo;
+        this.bookMapper = bookMapper1;
     }
 
     //Create
@@ -40,14 +42,8 @@ public class BookService {
             throw new IllegalArgumentException("Publisher ID must not be null");
         }
 
-        Author author = authorRepo.findById(bookDTO.getAuthorId())
-                .orElseThrow(() -> new CustomException("Author not Found with id " + id));
-
-        Publisher publisher = publisherRepo.findById(bookDTO.getPublisherId())
-                .orElseThrow(() -> new CustomException("Publisher not Found with id " + id));
-
-        Book book = BookMapper.toEntity(bookDTO, author, publisher);
-        return BookMapper.toDto(bookRepo.save(book));
+        Book book = bookMapper.toEntity(bookDTO);
+        return bookMapper.toDto(bookRepo.save(book));
     }
 
     //Get all
